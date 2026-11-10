@@ -1,0 +1,21 @@
+{
+  "cases": {
+    "capital": {
+      "output": "Paris",
+      "status": "pass"
+    },
+    "extract-ticket": {
+      "output": "{\"order_id\": \"A-1042\", \"intent\": \"refund\", \"urgent\": false}",
+      "status": "pass"
+    },
+    "greeting": {
+      "output": "Hello! How can I help you today?",
+      "status": "pass"
+    },
+    "refund-policy": {
+      "output": "You can request a refund within 30 days of purchase from the Orders page.",
+      "status": "pass"
+    }
+  },
+  "version": 1
+}

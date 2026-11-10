@@ -1,0 +1,44 @@
+# Test cases for a customer-support prompt.
+# Run from the repository root:
+#   prompt-regress run examples/support.yaml --model examples.fake_model:reply
+
+prompt: |
+  You are a support agent for an online shop. Answer briefly.
+  Customer: {{question}}
+
+cases:
+  - id: greeting
+    vars:
+      question: "hi"
+    assert:
+      - icontains: "hello"
+      - max_length: 80
+
+  - id: refund-policy
+    vars:
+      question: "How do I get a refund?"
+    assert:
+      - contains: ["30 days", "Orders page"]
+      - not_contains: "I cannot help"
+      - regex: "\\b\\d+ days\\b"
+
+  - id: extract-ticket
+    # A case can replace the file-level prompt.
+    prompt: |
+      Extract the order id and intent from this message as JSON.
+      Message: {{message}}
+    vars:
+      message: "Order A-1042 arrived broken, I want my money back."
+    assert:
+      - is_json: true
+      - json_schema:
+          type: object
+          required: [order_id, intent]
+          properties:
+            order_id: { type: string, pattern: "^A-\\d+$" }
+            intent: { enum: [refund, exchange, question] }
+
+  - id: capital
+    prompt: "What is the capital of France? Answer with one word."
+    assert:
+      - equals: "Paris"

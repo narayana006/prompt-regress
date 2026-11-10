@@ -1,0 +1,12 @@
+# A fuzzy expectation scored by a judge callable.
+#   prompt-regress run examples/judged.yaml --judge examples.fake_model:judge
+
+model: examples.fake_model:reply
+
+cases:
+  - id: refund-tone
+    prompt: "Customer: How do I get a refund?"
+    assert:
+      - judge:
+          rubric: "Mentions the REFUND window and the ORDERS page."
+          min_score: 0.8
